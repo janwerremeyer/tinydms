@@ -5,6 +5,8 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {Layout} from "./component/Layout";
 import {WelcomeIndex} from "./component/features/welcome";
 import {AuthGuard} from "./lib/auth/AuthGuard.tsx";
+import {Provider} from "react-redux";
+import {store} from "./state/store.ts";
 
 
 const router = createBrowserRouter([
@@ -17,7 +19,7 @@ const router = createBrowserRouter([
         element: <Layout/>,
         children: [
             {
-                path:"welcome",
+                path: "welcome",
                 element: <WelcomeIndex/>
             }
         ]
@@ -26,6 +28,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <RouterProvider router={router}/>
+        <Provider store={store}>
+            <RouterProvider router={router}/>
+        </Provider>
     </React.StrictMode>,
 )
