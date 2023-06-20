@@ -20,13 +20,13 @@ export function ConvertToFieldErrors(validationErrors: Array<ValidationError>) {
 export function ConvertFieldErrorsToHttpException(fieldErrors: ReturnType<typeof ConvertToFieldErrors>): HttpException {
   const serializableFieldErrors = Array.from(fieldErrors).map(([k, v]) => ({
     field: k,
-    messages: Array.from(v),
+    messages: Array.from(v)
   }));
 
   return new HttpException(
     {
-      fieldErrors: serializableFieldErrors,
+      fieldErrors: serializableFieldErrors
     },
-    HttpStatus.BAD_REQUEST,
+    HttpStatus.BAD_REQUEST
   );
 }

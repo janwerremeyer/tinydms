@@ -1,10 +1,7 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import {
-  ConvertFieldErrorsToHttpException,
-  ConvertToFieldErrors,
-} from './lib/validation/fieldErrorConverter';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { ValidationPipe } from "@nestjs/common";
+import { ConvertFieldErrorsToHttpException, ConvertToFieldErrors } from "./lib/validation/fieldErrorConverter";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,10 +11,11 @@ async function bootstrap() {
       exceptionFactory: (validationErrors) => {
         const fieldErrors = ConvertToFieldErrors(validationErrors);
         return ConvertFieldErrorsToHttpException(fieldErrors);
-      },
-    }),
+      }
+    })
   );
 
   await app.listen(3000);
 }
+
 bootstrap();
