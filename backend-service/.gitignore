@@ -37,4 +37,5 @@ lerna-debug.log*
 .env
 .env.*
 
-docker/db
+docker/keycloak-db
+docker/application-db

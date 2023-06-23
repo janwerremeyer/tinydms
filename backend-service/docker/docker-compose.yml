@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  db:
+  application-db:
     image: postgres:15.3-alpine
     restart: no
     environment:
@@ -10,7 +10,37 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./application-db:/var/lib/postgresql/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_RELATIVE_PATH: /auth
+
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+#      - ./realm.json:/opt/keycloak/data/import/realm.json
+      - ./keycloak.conf:/opt/keycloak/conf/keycloak.conf
+
+
+  keycloak-db:
+    image: postgres:15.3-alpine
+    restart: no
+    environment:
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=keycloak
+      - POSTGRES_DB=keycloak
+    ports:
+      - '55432:5432'
+    volumes:
+      - ./keycloak-db:/var/lib/postgresql/data
+
 volumes:
   db:
     driver: local
