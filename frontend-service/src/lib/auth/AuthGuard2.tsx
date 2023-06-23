@@ -1,15 +1,14 @@
-import {Navigate} from "react-router-dom";
 import AuthService from "../../service/AuthService.ts";
 
 type TAuthGuardProps = {
-    target: string
+    children: any
 }
 
-export const AuthGuard = ({target}: TAuthGuardProps) => {
+export const AuthGuard2 = ({children}: TAuthGuardProps) => {
     const isAuthenticated = AuthService.isLoggedIn()
 
     if (isAuthenticated) {
-        return <Navigate to={target} replace={true}/>
+        return children
     }
 
     AuthService.doLogin()

@@ -1,12 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Outlet, RouterProvider} from "react-router-dom";
 import {Layout} from "./component/Layout";
-import {WelcomeIndex} from "./component/features/welcome";
+import {WelcomeIndex} from "./pages/welcome";
 import {AuthGuard} from "./lib/auth/AuthGuard.tsx";
 import {Provider} from "react-redux";
 import {store} from "./state/store.ts";
+import AuthService from "./service/AuthService.ts";
+import {AuthGuard2} from "./lib/auth/AuthGuard2.tsx";
 
 
 const router = createBrowserRouter([
@@ -16,7 +18,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/app",
-        element: <Layout/>,
+        element: <AuthGuard2><Provider store={store}><Layout/></Provider></AuthGuard2>,
         children: [
             {
                 path: "welcome",
@@ -26,10 +28,16 @@ const router = createBrowserRouter([
     }
 ])
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <React.StrictMode>
-        <Provider store={store}>
+async function main(){
+
+    await AuthService.initKeycloak(() => {})
+
+    ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+        <React.StrictMode>
+
             <RouterProvider router={router}/>
-        </Provider>
-    </React.StrictMode>,
-)
+        </React.StrictMode>,
+    )
+}
+
+main()
