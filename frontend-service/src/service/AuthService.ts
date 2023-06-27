@@ -1,4 +1,6 @@
 import Keycloak from "keycloak-js";
+import jwt_decode from "jwt-decode";
+import {DateTime} from "luxon";
 
 const _kc = new Keycloak({
     url: import.meta.env.VITE_KEYCLOAK_URL,
@@ -28,16 +30,37 @@ const initKeycloak = async (onAuthenticatedCallback: any) => {
 
 const doLogin = () => _kc.login();
 
+const accountManagement = () => _kc.accountManagement()
+export const accountManagementUrl = () => _kc.createAccountUrl({redirectUri:window.location.origin + window.location.pathname})
+
 const doLogout = _kc.logout;
 const getToken = () => _kc.token;
 const isLoggedIn = () => !!_kc.token;
 
-const updateToken = (successCallback: any) =>
-    _kc.updateToken(5)
+const updateToken = (minValidity = 5, successCallback? : () => void) =>
+    _kc.updateToken(minValidity)
         .then(successCallback)
         .catch(doLogin);
 
 const getUsername = () => _kc.tokenParsed?.preferred_username;
+
+const getSessionLifetime = () => {
+    const buildReturnObject = (seconds: number) => ({seconds})
+
+    const token = getToken()
+    if (!token) {
+        return buildReturnObject(0)
+    }
+
+    const decoded = jwt_decode(token) as any
+
+    const exp = DateTime.fromSeconds(decoded.exp)
+
+
+    const diff = exp.diff(DateTime.now(), "seconds")
+
+    return buildReturnObject(diff.seconds)
+}
 
 const hasRole = (roles: any) => roles.some((role: any) => _kc.hasRealmRole(role));
 
@@ -50,6 +73,7 @@ const UserService = {
     updateToken,
     getUsername,
     hasRole,
+    accountManagementUrl
 };
 
 export default UserService;
