@@ -1,15 +1,7 @@
-import { useState } from 'react';
-import {
-    Group,
-    Box,
-    Collapse,
-    ThemeIcon,
-    Text,
-    UnstyledButton,
-    createStyles,
-    rem,
-} from '@mantine/core';
-import { IconCalendarStats, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import {FC, PropsWithChildren, useState} from 'react';
+import {Box, Collapse, createStyles, Group, rem, Text, ThemeIcon, UnstyledButton,} from '@mantine/core';
+import {IconChevronLeft, IconChevronRight} from '@tabler/icons-react';
+import {Link, NavLink} from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -55,10 +47,11 @@ interface LinksGroupProps {
     label: string;
     initiallyOpened?: boolean;
     links?: { label: string; link: string }[];
+    link?: string
 }
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) {
-    const { classes, theme } = useStyles();
+export function LinksGroup({icon: Icon, label, initiallyOpened, links, link}: LinksGroupProps) {
+    const {classes, theme} = useStyles();
     const hasLinks = Array.isArray(links);
     const [opened, setOpened] = useState(initiallyOpened || false);
     const ChevronIcon = theme.dir === 'ltr' ? IconChevronRight : IconChevronLeft;
@@ -74,13 +67,16 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
         </Text>
     ));
 
+    const ButtonComponent = link ? ({children}:PropsWithChildren) => <UnstyledButton className={classes.control} component={NavLink} to={link}>{children}</UnstyledButton> :
+        ({children}: PropsWithChildren) =>   <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>{children}</UnstyledButton>
+
     return (
         <>
-            <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
+            <ButtonComponent>
                 <Group position="apart" spacing={0}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{display: 'flex', alignItems: 'center'}}>
                         <ThemeIcon variant="light" size={30}>
-                            <Icon size="1.1rem" />
+                            <Icon size="1.1rem"/>
                         </ThemeIcon>
                         <Box ml="md">{label}</Box>
                     </Box>
@@ -95,30 +91,28 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
                         />
                     )}
                 </Group>
-            </UnstyledButton>
+            </ButtonComponent>
             {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
         </>
     );
 }
 
-const mockdata = {
-    label: 'Releases',
-    icon: IconCalendarStats,
-    links: [
-        { label: 'Upcoming releases', link: '/' },
-        { label: 'Previous releases', link: '/' },
-        { label: 'Releases schedule', link: '/' },
-    ],
-};
 
-export function NavbarLinksGroup() {
+type TNavbarLinksGroupProps = {
+    label: string,
+    icon: FC<any>,
+    link?: string,
+    links?: Array<{ label: string, link: string }>
+}
+
+export function NavbarLinksGroup(props: TNavbarLinksGroupProps) {
     return (
         <Box
             sx={(theme) => ({
                 backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
             })}
         >
-            <LinksGroup {...mockdata} />
+            <LinksGroup {...props} />
         </Box>
     );
 }

@@ -1,19 +1,20 @@
-import {Code, createStyles, Group, Navbar, rem, ScrollArea} from '@mantine/core';
+import {createStyles, Navbar, ScrollArea} from '@mantine/core';
 import {
     IconAdjustments,
     IconCalendarStats,
     IconFileAnalytics,
+    IconFileUpload,
     IconGauge,
     IconLock,
     IconNotes,
-    IconPresentationAnalytics,
+    IconPresentationAnalytics
 } from '@tabler/icons-react';
 import {NavbarLinksGroup} from "./LinkGroup.tsx";
 
-const Logo = () => <div>LOGO</div>
 
-const mockdata = [
-    {label: 'Dashboard', icon: IconGauge},
+const navigationConfig = [
+    {label: 'Dashboard', icon: IconGauge, link: "/app/welcome"},
+    {label: 'Upload', icon: IconFileUpload, link: "/app/upload"},
     {
         label: 'Market news',
         icon: IconNotes,
@@ -52,58 +53,24 @@ const useStyles = createStyles((theme) => ({
     navbar: {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
         paddingBottom: 0,
-    },
-
-    header: {
-        padding: theme.spacing.md,
-        paddingTop: 0,
-        marginLeft: `calc(${theme.spacing.md} * -1)`,
-        marginRight: `calc(${theme.spacing.md} * -1)`,
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        borderBottom: `${rem(1)} solid ${
-            theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-        }`,
+        paddingTop: "0 !important"
     },
 
     links: {
         marginLeft: `calc(${theme.spacing.md} * -1)`,
         marginRight: `calc(${theme.spacing.md} * -1)`,
-    },
-
-    linksInner: {
-        paddingTop: theme.spacing.xl,
-        paddingBottom: theme.spacing.xl,
-    },
-
-    footer: {
-        marginLeft: `calc(${theme.spacing.md} * -1)`,
-        marginRight: `calc(${theme.spacing.md} * -1)`,
-        borderTop: `${rem(1)} solid ${
-            theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-        }`,
-    },
+    }
 }));
 
 export function MainNavbar() {
     const {classes} = useStyles();
-    const links = mockdata.map((item) => <NavbarLinksGroup {...item} key={item.label}/>);
+    const links = navigationConfig.map((item) => <NavbarLinksGroup {...item} key={item.label}/>);
 
     return (
-        
+
         <Navbar height={800} width={{sm: 300}} p="md" className={classes.navbar}>
-            <Navbar.Section className={classes.header}>
-                <Group position="apart">
-                    <Logo/>
-                    <Code sx={{fontWeight: 700}}>v3.1.2</Code>
-                </Group>
-            </Navbar.Section>
-
             <Navbar.Section grow className={classes.links} component={ScrollArea}>
-                <div className={classes.linksInner}>{links}</div>
-            </Navbar.Section>
-
-            <Navbar.Section className={classes.footer}>
-
+                <div>{links}</div>
             </Navbar.Section>
         </Navbar>
     );

@@ -11,6 +11,7 @@ import AuthService from "./service/AuthService.ts";
 import {AuthGuard2} from "./lib/auth/AuthGuard2.tsx";
 import "./lib/math/global.ts"
 import {SessionUpdater} from "./component/auth/SessionUpdater.tsx";
+import {UploadFeature} from "./featues/upload";
 
 
 const router = createBrowserRouter([
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: "welcome",
                 element: <WelcomeIndex/>
+            },
+            {
+                path:"upload",
+                element: <UploadFeature/>
             }
         ]
     }
