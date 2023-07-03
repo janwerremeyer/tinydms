@@ -56,12 +56,11 @@ export function LinksGroup({icon: Icon, label, initiallyOpened, links, link}: Li
     const [opened, setOpened] = useState(initiallyOpened || false);
     const ChevronIcon = theme.dir === 'ltr' ? IconChevronRight : IconChevronLeft;
     const items = (hasLinks ? links : []).map((link) => (
-        <Text<'a'>
-            component="a"
+        <Text<typeof NavLink>
+            component={NavLink}
             className={classes.link}
-            href={link.link}
+            to={link.link}
             key={link.label}
-            onClick={(event) => event.preventDefault()}
         >
             {link.label}
         </Text>

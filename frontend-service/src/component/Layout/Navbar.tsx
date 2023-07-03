@@ -16,11 +16,11 @@ const navigationConfig = [
     {label: 'Dashboard', icon: IconGauge, link: "/app/welcome"},
     {label: 'Upload', icon: IconFileUpload, link: "/app/upload"},
     {
-        label: 'Market news',
+        label: 'Files',
         icon: IconNotes,
         initiallyOpened: true,
         links: [
-            {label: 'Overview', link: '/'},
+            {label: 'Overview', link: '/app/files/all'},
             {label: 'Forecasts', link: '/'},
             {label: 'Outlook', link: '/'},
             {label: 'Real time', link: '/'},

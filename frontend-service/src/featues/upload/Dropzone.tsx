@@ -1,14 +1,23 @@
 import {Group, rem, Text, useMantineTheme} from "@mantine/core";
-import {Dropzone as MantineDropzone, DropzoneProps, PDF_MIME_TYPE} from "@mantine/dropzone";
+import {
+    Dropzone as MantineDropzone,
+    DropzoneProps,
+    FileRejection,
+    FileWithPath,
+    PDF_MIME_TYPE
+} from "@mantine/dropzone";
 import {IconPhoto, IconUpload, IconX} from "@tabler/icons-react";
 
+type TDropzoneProps = Partial<DropzoneProps> & {
+    onDrop: (files: Array<FileWithPath>) => void
+    onReject: (files: Array<FileRejection>) => void
+}
 
-export const Dropzone = (props: Partial<DropzoneProps>) => {
+
+export const Dropzone = (props: TDropzoneProps ) => {
     const theme = useMantineTheme();
 
     return <MantineDropzone
-        onDrop={(files) => console.log('accepted files', files)}
-        onReject={(files) => console.log('rejected files', files)}
         maxSize={3 * 1024 ** 2}
         accept={PDF_MIME_TYPE}
         {...props}

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Outlet, RouterProvider} from "react-router-dom";
 import {Layout} from "./component/Layout";
 import {WelcomeIndex} from "./pages/welcome";
 import {AuthGuard} from "./lib/auth/AuthGuard.tsx";
@@ -12,6 +12,7 @@ import {AuthGuard2} from "./lib/auth/AuthGuard2.tsx";
 import "./lib/math/global.ts"
 import {SessionUpdater} from "./component/auth/SessionUpdater.tsx";
 import {UploadFeature} from "./featues/upload";
+import {AllFilesPage} from "./featues/files/AllFilesPage.tsx";
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,14 @@ const router = createBrowserRouter([
             {
                 path:"upload",
                 element: <UploadFeature/>
+            },
+            {
+                path:"files",
+                element: <Outlet/>,
+                children: [
+                    {path: "all",
+                    element: <AllFilesPage/>}
+                ]
             }
         ]
     }
