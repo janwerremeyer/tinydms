@@ -13,7 +13,12 @@ import "./lib/math/global.ts"
 import {SessionUpdater} from "./component/auth/SessionUpdater.tsx";
 import {UploadFeature} from "./featues/upload";
 import {AllFilesPage} from "./featues/files/AllFilesPage.tsx";
+import { pdfjs } from 'react-pdf';
 
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.min.js',
+    import.meta.url,
+).toString();
 
 const router = createBrowserRouter([
     {

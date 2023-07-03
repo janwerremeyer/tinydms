@@ -5,7 +5,14 @@ import {Header} from "./Header.tsx";
 
 export const Layout = () => {
     return <AppShell
-        padding="md"
+        padding="xs"
+        styles={{
+            main: {
+                paddingTop: "calc(var(--mantine-header-height, 0px) + 0.0rem)",
+                paddingLeft: "calc(var(--mantine-navbar-width, 0px) + 0.0rem)",
+                paddingRight: "calc(var(--mantine-aside-width, 0px) + 0.0rem)"
+            }
+        }}
         navbar={<MainNavbar/>}
         header={<Header/>}
     >
