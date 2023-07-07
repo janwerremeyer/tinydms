@@ -23,7 +23,6 @@ export class PreviewController {
         const buffer =  Buffer.from(byteArray.buffer, byteArray.byteOffset, byteArray.byteLength)
         const preview = await this.previewService.thumbnail(buffer)
 
-        console.log(preview)
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

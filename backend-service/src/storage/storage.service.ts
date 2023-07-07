@@ -16,7 +16,8 @@ export class StorageService {
 
     constructor() {
         this.s3Client = new S3Client({
-            endpoint: "https://s3.nl-ams.scw.cloud",
+            // endpoint: "https://s3.nl-ams.scw.cloud",
+            endpoint: "http://127.0.0.1:9000",
             region: "nl-ams",
             forcePathStyle: false,
         })
