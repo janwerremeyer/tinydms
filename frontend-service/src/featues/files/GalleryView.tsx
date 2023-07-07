@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import {Text} from "@mantine/core"
 import {useDisclosure} from "@mantine/hooks";
 import {PreviewDialog} from "./PreviewDialog.tsx";
+import {TFileReference} from "../../api/storage.slice.ts";
 
 const Grid = styled.div`
   display: grid;
@@ -34,15 +35,14 @@ const Cell = styled.div`
 
 
 type TListViewProps = {
-    data: ListObjectsCommandOutput
+    data: Array<TFileReference>
 }
 
 export const Document = ({filename}: {filename: string}) => {
     const [opened, { open, close }] = useDisclosure(false);
-console.log(opened)
 
     return <Cell>
-        <img  onClick={open} src={`http://localhost:3000/preview/thumbnail/${filename}`}/>
+        <img  onClick={open} src={`http://localhost:3000/preview/thumbnail?filename=${filename}`}/>
         <Text>{filename}</Text>
         <PreviewDialog filename={filename} opened={opened} close={close}/>
     </Cell>
@@ -52,6 +52,6 @@ export const GalleryView = ({data}: TListViewProps) => {
     console.log(data)
 
     return <Grid>
-        {data.Contents?.map(f => <Document key={f.Key} filename={f.Key||""}/> )}
+        {data?.map(f => <Document key={f.id} filename={f.filename||""}/> )}
     </Grid>
 }

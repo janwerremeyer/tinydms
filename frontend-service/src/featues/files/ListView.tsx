@@ -2,10 +2,11 @@ import {ListObjectsCommandOutput} from "@aws-sdk/client-s3";
 import {Table} from "@mantine/core";
 import {FileSize} from "../../component/FileSize.tsx";
 import {DateTime} from "luxon";
+import {TFileReference} from "../../api/storage.slice.ts";
 
 
 type TListViewProps = {
-    data: ListObjectsCommandOutput
+    data: Array<TFileReference>
 }
 
 export const ListView = ({data}: TListViewProps) => {
@@ -20,10 +21,10 @@ export const ListView = ({data}: TListViewProps) => {
             </tr>
         </thead>
         <tbody>
-        {data.Contents?.map(f => <tr key={f.Key}>
-            <td>{f.Key}</td>
-            <td>{new Intl.DateTimeFormat("de-de", {dateStyle: "short", timeStyle: "short"}).format(DateTime.fromISO(f.LastModified as any as string).toJSDate())}</td>
-            <td><FileSize size={f.Size || 0}/></td>
+        {data?.map(f => <tr key={f.id}>
+            <td>{f.filename}</td>
+            <td>{new Intl.DateTimeFormat("de-de", {dateStyle: "short", timeStyle: "short"}).format(DateTime.fromISO(f.updated).toJSDate())}</td>
+            <td><FileSize size={f.size || 0}/></td>
         </tr>)}
         </tbody>
     </Table>
