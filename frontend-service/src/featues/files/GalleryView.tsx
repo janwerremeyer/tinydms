@@ -1,9 +1,8 @@
-import {ListObjectsCommandOutput} from "@aws-sdk/client-s3";
 import styled from "@emotion/styled";
 import {Text} from "@mantine/core"
 import {useDisclosure} from "@mantine/hooks";
 import {PreviewDialog} from "./PreviewDialog.tsx";
-import {TFileReference} from "../../api/storage.slice.ts";
+import {TFileReference} from "../../api/fileReference.slice.ts";
 
 const Grid = styled.div`
   display: grid;
@@ -15,7 +14,7 @@ const Grid = styled.div`
   border-top: 1px solid black;
   border-left: 1px solid black;
 
-  
+
 `
 
 const Cell = styled.div`
@@ -27,7 +26,7 @@ const Cell = styled.div`
   padding: 2rem;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
-  
+
   img {
     max-width: 80%;
   }
@@ -38,11 +37,11 @@ type TListViewProps = {
     data: Array<TFileReference>
 }
 
-export const Document = ({filename}: {filename: string}) => {
-    const [opened, { open, close }] = useDisclosure(false);
+export const Document = ({filename}: { filename: string }) => {
+    const [opened, {open, close}] = useDisclosure(false);
 
     return <Cell>
-        <img  onClick={open} src={`http://localhost:3000/preview/thumbnail?filename=${filename}`}/>
+        <img onClick={open} src={`http://localhost:3000/preview/thumbnail?filename=${filename}`}/>
         <Text>{filename}</Text>
         <PreviewDialog filename={filename} opened={opened} close={close}/>
     </Cell>
@@ -52,6 +51,6 @@ export const GalleryView = ({data}: TListViewProps) => {
     console.log(data)
 
     return <Grid>
-        {data?.map(f => <Document key={f.id} filename={f.filename||""}/> )}
+        {data?.map(f => <Document key={f.id} filename={f.filename || ""}/>)}
     </Grid>
 }

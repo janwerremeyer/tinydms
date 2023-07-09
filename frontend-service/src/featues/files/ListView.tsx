@@ -1,8 +1,7 @@
-import {ListObjectsCommandOutput} from "@aws-sdk/client-s3";
 import {Table} from "@mantine/core";
 import {FileSize} from "../../component/FileSize.tsx";
 import {DateTime} from "luxon";
-import {TFileReference} from "../../api/storage.slice.ts";
+import {TFileReference} from "../../api/fileReference.slice.ts";
 
 
 type TListViewProps = {
@@ -14,16 +13,19 @@ export const ListView = ({data}: TListViewProps) => {
 
     return <Table verticalSpacing={"xs"} highlightOnHover striped>
         <thead>
-            <tr>
-                <th>Filename</th>
-                <th>Modified</th>
-                <th>Size</th>
-            </tr>
+        <tr>
+            <th>Filename</th>
+            <th>Modified</th>
+            <th>Size</th>
+        </tr>
         </thead>
         <tbody>
         {data?.map(f => <tr key={f.id}>
             <td>{f.filename}</td>
-            <td>{new Intl.DateTimeFormat("de-de", {dateStyle: "short", timeStyle: "short"}).format(DateTime.fromISO(f.updated).toJSDate())}</td>
+            <td>{new Intl.DateTimeFormat("de-de", {
+                dateStyle: "short",
+                timeStyle: "short"
+            }).format(DateTime.fromISO(f.updated).toJSDate())}</td>
             <td><FileSize size={f.size || 0}/></td>
         </tr>)}
         </tbody>

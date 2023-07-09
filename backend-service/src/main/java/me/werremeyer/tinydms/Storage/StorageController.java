@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.model.ListObjectVersionsResponse;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(("storage"))
@@ -33,8 +34,11 @@ public class StorageController {
         var len = file.getSize();
         var type = file.getContentType();
 
+        var existing = fileReferenceRepository.findByFilename(filename);
 
-        FileReference fileReference = new FileReference();
+        FileReference fileReference;
+        fileReference = Objects.requireNonNullElseGet(existing, FileReference::new);
+
         fileReference.setFilename(filename);
         fileReference.setSize(len);
         fileReference.setContentType(type);
@@ -66,12 +70,5 @@ public class StorageController {
         return new ResponseEntity<>(listObjectVersionsResponse, null, HttpStatus.OK);
     }
 
-
-    @GetMapping("list")
-    public Iterable<FileReference> list() {
-        var  r = fileReferenceRepository.findAll();
-
-        return r;
-    }
 
 }

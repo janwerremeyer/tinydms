@@ -1,4 +1,3 @@
-import {useListQuery} from "../../api/storage.slice.ts";
 import {Tabs, TabsValue} from "@mantine/core";
 import { useLocalStorage } from '@mantine/hooks';
 
@@ -8,9 +7,10 @@ import React from "react";
 import {ListView} from "./ListView.tsx";
 import {IsLoadingOrError} from "../../component/IsLoadingOrError.tsx";
 import {GalleryView} from "./GalleryView.tsx";
+import {useAllQuery} from "../../api/fileReference.slice.ts";
 
 export const AllFilesPage = () => {
-    const {data, isLoading, error} = useListQuery({})
+    const {data, isLoading, error} = useAllQuery()
     const [defaultView, setDefaultView] = useLocalStorage<TabsValue>({key: "FILE_DEFAULT_VIEW", defaultValue: "list"})
 
     return <IsLoadingOrError isLoading={isLoading} error={error}>
