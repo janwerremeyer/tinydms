@@ -2,6 +2,7 @@ import {Table} from "@mantine/core";
 import {FileSize} from "../../component/FileSize.tsx";
 import {DateTime} from "luxon";
 import {TFileReference} from "../../api/fileReference.slice.ts";
+import {FileTags} from "./FileTags.tsx";
 
 
 type TListViewProps = {
@@ -9,19 +10,20 @@ type TListViewProps = {
 }
 
 export const ListView = ({data}: TListViewProps) => {
-    console.log(data)
 
     return <Table verticalSpacing={"xs"} highlightOnHover striped>
         <thead>
         <tr>
             <th>Filename</th>
+            <th>Tags</th>
             <th>Modified</th>
             <th>Size</th>
         </tr>
         </thead>
         <tbody>
-        {data?.map(f => <tr key={f.id}>
+        {[...data].sort((a, b) => (a.filename > b.filename) ? 1 : -1 ).map(f => <tr key={f.id}>
             <td>{f.filename}</td>
+            <td><FileTags id={f.id} tags={f.tags}/></td>
             <td>{new Intl.DateTimeFormat("de-de", {
                 dateStyle: "short",
                 timeStyle: "short"

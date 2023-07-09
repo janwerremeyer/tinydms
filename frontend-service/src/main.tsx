@@ -13,7 +13,9 @@ import "./lib/math/global.ts"
 import {SessionUpdater} from "./component/auth/SessionUpdater.tsx";
 import {UploadFeature} from "./featues/upload";
 import {AllFilesPage} from "./featues/files/AllFilesPage.tsx";
-import { pdfjs } from 'react-pdf';
+import {pdfjs} from 'react-pdf';
+import {MantineProvider} from "@mantine/core";
+import {Notifications} from "@mantine/notifications";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -34,28 +36,34 @@ const router = createBrowserRouter([
                 element: <WelcomeIndex/>
             },
             {
-                path:"upload",
+                path: "upload",
                 element: <UploadFeature/>
             },
             {
-                path:"files",
+                path: "files",
                 element: <Outlet/>,
                 children: [
-                    {path: "all",
-                    element: <AllFilesPage/>}
+                    {
+                        path: "all",
+                        element: <AllFilesPage/>
+                    }
                 ]
             }
         ]
     }
 ])
 
-async function main(){
+async function main() {
 
-    await AuthService.initKeycloak(() => {})
+    await AuthService.initKeycloak(() => {
+    })
 
     ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <React.StrictMode>
-            <RouterProvider router={router}/>
+            <MantineProvider withNormalizeCSS withGlobalStyles>
+                <Notifications/>
+                <RouterProvider router={router}/>
+            </MantineProvider>
         </React.StrictMode>,
     )
 }

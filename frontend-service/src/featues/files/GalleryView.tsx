@@ -48,7 +48,6 @@ export const Document = ({filename}: { filename: string }) => {
 }
 
 export const GalleryView = ({data}: TListViewProps) => {
-    console.log(data)
 
     return <Grid>
         {data?.map(f => <Document key={f.id} filename={f.filename || ""}/>)}

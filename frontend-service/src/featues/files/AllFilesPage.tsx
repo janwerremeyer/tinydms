@@ -11,6 +11,7 @@ import {useAllQuery} from "../../api/fileReference.slice.ts";
 
 export const AllFilesPage = () => {
     const {data, isLoading, error} = useAllQuery()
+
     const [defaultView, setDefaultView] = useLocalStorage<TabsValue>({key: "FILE_DEFAULT_VIEW", defaultValue: "list"})
 
     return <IsLoadingOrError isLoading={isLoading} error={error}>
